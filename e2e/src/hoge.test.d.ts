@@ -1,0 +1,1 @@
+export default "test!\na\nb\nc\nd\n"
