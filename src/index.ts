@@ -46,7 +46,9 @@ function instantiate(option: Options): PluginOption {
   const suffix = option.generatedSuffix ?? ".d.ts";
   const fs = option.fs ?? defaultFs;
   const resolvePath = option.resolvePath ?? defaultResolvePath;
-  const extension = Array.isArray(option.extension) ? option.extension : [option.extension];
+  const extension = Array.isArray(option.extension)
+    ? option.extension
+    : [option.extension];
 
   return {
     name: option.name ?? `unknown-plugin(${extension.join(",")})`,
@@ -56,6 +58,10 @@ function instantiate(option: Options): PluginOption {
         id: extensionFilter(extension),
       },
       async handler(source, importer) {
+        // Double-checking for the possibility that the filter property is not supported.
+        if (extension.every((ext) => !source.endsWith(ext))) {
+          return null;
+        }
         const resolved = importer
           ? await resolvePath(importer, "..", source)
           : source;
@@ -101,11 +107,6 @@ function instantiate(option: Options): PluginOption {
   };
 }
 
-function extensionFilter(
-  extension: Arrayable<`.${string}`>,
-): RegExp | RegExp[] {
-  if (Array.isArray(extension)) {
-    return extension.map((ext) => new RegExp(ext));
-  }
-  return new RegExp(extension);
+function extensionFilter(extension: `.${string}`[]): RegExp | RegExp[] {
+  return extension.map((ext) => new RegExp(`\\${ext}$`));
 }
