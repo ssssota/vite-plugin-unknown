@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-unknown",
   "description": "Import any file as a TS module in Vite",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "exports": {
     ".": {
