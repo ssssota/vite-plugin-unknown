@@ -32,7 +32,7 @@ This plugin is ideal for:
 * Integrating **i18n translation files** (e.g., JSON, YAML) with strong type checking for keys.
 * Any scenario where you have structured data in a non-standard file format that you want to import with full type safety.
 
-## Usage
+## Usage (YAML Example)
 
 ```sh
 npm install -D vite-plugin-unknown
@@ -61,9 +61,29 @@ export default defineConfig({
     unknown({
       extensions: ['.yaml', '.yml'], // Specify the file extensions to handle
       transform: transformYaml, // Use the transform function for '.yaml' files
-    })
+    }),
   ],
 });
+```
+
+### Optional: Toolchain Integration
+
+```
+# .gitignore
+# Ignore generated .d.ts files
+*.yaml.d.ts
+*.yml.d.ts
+```
+
+```jsonc
+// .vscode/settings.json
+{
+  "explorer.fileNesting.enabled": true, // Collapse generated files
+  "explorer.fileNesting.patterns": {
+    "*.yml": "*.yml.d.ts",
+    "*.yaml": "*.yaml.d.ts"
+  }
+}
 ```
 
 ## License
